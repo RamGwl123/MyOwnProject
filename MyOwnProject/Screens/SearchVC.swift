@@ -41,7 +41,7 @@ class SearchVC: UIViewController {
             return
         }
         let followerVC      = FollowerListVC()
-        followerVC.userName = userNameTF.text
+        followerVC.username = userNameTF.text
         followerVC.title    = userNameTF.text
         navigationController?.pushViewController(followerVC, animated: true)
         

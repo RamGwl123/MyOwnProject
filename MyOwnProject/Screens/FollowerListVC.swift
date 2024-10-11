@@ -11,7 +11,7 @@ class FollowerListVC: UIViewController {
     
     enum Section { case main }
     
-    var userName: String!
+    var username: String!
     var followers: [Follower] = []
     var filterFollowers: [Follower] = []
     var page                = 1
@@ -26,7 +26,7 @@ class FollowerListVC: UIViewController {
         
         configureViewController()
         configureCollectionView()
-        getFollowers(userName: userName, page: page)
+        getFollowers(username: username, page: page)
         configureDataSource()
         searchViewController()
     }
@@ -42,7 +42,7 @@ class FollowerListVC: UIViewController {
     }
     
     func configureCollectionView() {
-        collectionView = UICollectionView.init(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
@@ -58,11 +58,13 @@ class FollowerListVC: UIViewController {
         navigationItem.searchController                         = searchController
     }
     
-    func getFollowers(userName: String, page: Int) {
+    func getFollowers(username: String, page: Int) {
+        
         showLoadingView()
-        NetworkManager.shared.getFollowers(for: userName, page: 1) { [weak self] result in
+        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
             guard let self = self else { return }
             self.dismissLoadingView()
+            
             switch result {
             case .success(let followers):
                 if followers!.count < 100 { self.hasMoreFollowers = false }
@@ -75,6 +77,7 @@ class FollowerListVC: UIViewController {
                     }
                 }
                 self.updateData(on: self.followers)
+                
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Bad stuff happed", message: error.rawValue, buttonTitle: "OK")
             }
@@ -108,9 +111,8 @@ extension FollowerListVC: UICollectionViewDelegate {
         if offsetY > contentHeight - height {
             guard hasMoreFollowers else { return }
             page += 1
-            getFollowers(userName: userName, page: page)
+            getFollowers(username: username, page: page)
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
