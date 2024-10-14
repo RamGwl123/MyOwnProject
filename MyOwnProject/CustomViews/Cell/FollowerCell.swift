@@ -24,26 +24,23 @@ class FollowerCell: UICollectionViewCell {
     }
     
     func set(follower: Follower) {
+        avatarImageView.downloadImage(fromUrl: follower.avatarUrl)
         userLabel.text = follower.login
-        avatarImageView.downloadImage(from: follower.avatarUrl)
     }
     
     func configure() {
-        addSubview(avatarImageView)
-        addSubview(userLabel)
-        
+        addSubViews(avatarImageView, userLabel)
         let pading: CGFloat = 8
         
         NSLayoutConstraint.activate([
-        
-            avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: pading),
-            avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pading),
-            avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pading),
+            avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: pading),
+            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: pading),
+            avatarImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -pading),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor),
             
             userLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 12),
-            userLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pading),
-            userLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pading),
+            userLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: pading),
+            userLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -pading),
             userLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
